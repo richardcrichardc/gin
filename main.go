@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/codegangsta/envy/lib"
-	"github.com/codegangsta/gin/lib"
+	"github.com/richardcrichardc/gin/lib"
 	shellwords "github.com/mattn/go-shellwords"
 	"gopkg.in/urfave/cli.v1"
 
@@ -277,7 +277,9 @@ func scanChanges(watchPath string, excludeDirs []string, allFiles bool, cb scanC
 				return nil
 			}
 
-			if (allFiles || filepath.Ext(path) == ".go") && info.ModTime().After(startTime) {
+			ext := filepath.Ext(path)
+
+			if (allFiles || ext == ".go" || ext == ".scss" || ext == ".elm") && info.ModTime().After(startTime) {
 				cb(path)
 				startTime = time.Now()
 				return errors.New("done")

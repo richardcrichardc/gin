@@ -3,7 +3,7 @@ package gin
 import (
 	"fmt"
 	"os/exec"
-	"path/filepath"
+	//"path/filepath"
 	"runtime"
 	"strings"
 )
@@ -47,17 +47,25 @@ func (b *builder) Errors() string {
 }
 
 func (b *builder) Build() error {
-	args := append([]string{"go", "build", "-o", filepath.Join(b.wd, b.binary)}, b.buildArgs...)
+/*	args := append([]string{"go", "build", "-o", filepath.Join(b.wd, b.binary)}, b.buildArgs...)
 
-	var command *exec.Cmd
 	if b.useGodep {
 		args = append([]string{"godep"}, args...)
 	}
+
 	command = exec.Command(args[0], args[1:]...)
+*/
+
+	command := exec.Command("./gin-build.sh")
 
 	command.Dir = b.dir
 
 	output, err := command.CombinedOutput()
+
+	if err != nil {
+		b.errors = string(output)
+		return err
+	}
 
 	if command.ProcessState.Success() {
 		b.errors = ""
